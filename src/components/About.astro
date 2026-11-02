@@ -1,5 +1,5 @@
 ---
-import { SITE, sectionLabel, sectionUrl, t, type Lang } from '../lib/site';
+import { SITE, privacyNote, sectionLabel, sectionUrl, t, type Lang } from '../lib/site';
 
 interface Props { lang: Lang }
 const { lang } = Astro.props;
@@ -19,7 +19,7 @@ const p = SITE.publisher;
     </>
   )}
   <h2>{s.publisher}</h2>
-  <p>{p.url ? <a href={p.url} rel="noopener">{p.name}</a> : p.name}{[p.address, p.vat].filter(Boolean).map((x) => `, ${x}`).join('')}. {s.noCookies}</p>
+  <p>{p.url ? <a href={p.url} rel="noopener">{p.name}</a> : p.name}{[p.address, p.vat].filter(Boolean).map((x) => `, ${x}`).join('')}. {privacyNote(lang)}</p>
   {SITE.credit !== false && <p class="credit">{s.poweredBy} <a href="https://redazia.com" rel="noopener">Redazia</a>.</p>}
 </article>
 

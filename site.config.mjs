@@ -60,6 +60,11 @@ export default {
     vat: 'P.IVA IT00000000000',
     url: 'https://example.com',
   },
+  // Visit statistics, off by default. With Matomo the site counts visits
+  // without cookies (no banner needed) and says so in the footer:
+  // analytics: { matomo: { url: 'https://stats.example.com/', siteId: '1' } },
+  analytics: null,
+
   // Where readers report a mistake.
   contact: 'redazione@example.com',
 

@@ -32,4 +32,5 @@ export interface SiteConfig {
   demo?: boolean;
   timezone?: string;
   paths?: Partial<Record<Lang, Partial<Paths>>>;
+  analytics?: { matomo?: { url: string; siteId: string } } | null;
 }
