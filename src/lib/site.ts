@@ -18,6 +18,12 @@ export function t(lang: Lang) {
   return STRINGS[lang] || STRINGS.en;
 }
 
+/** What the site says about cookies and statistics, in the footer and "About". */
+export function privacyNote(lang: Lang): string {
+  const s = t(lang);
+  return SITE.analytics?.matomo ? s.anonStats : s.noCookies;
+}
+
 export function tagline(lang: Lang): string {
   return SITE.tagline[lang] || SITE.tagline[MAIN] || '';
 }

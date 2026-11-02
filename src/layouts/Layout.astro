@@ -1,7 +1,7 @@
 ---
 import { LANG_NAMES, LOCALES } from '../lib/i18n';
 import { MONO_FONT } from '../lib/themes';
-import { BASE, LANGS, asset, SITE, THEME, absolute, href, paths, sectionLabel, sectionUrl, t, tagline, type Lang } from '../lib/site';
+import { BASE, LANGS, asset, SITE, THEME, absolute, href, paths, privacyNote, sectionLabel, sectionUrl, t, tagline, type Lang } from '../lib/site';
 import customCss from '../custom/custom.css?raw';
 
 // The site owner's own parts (src/custom/, never touched by template
@@ -39,6 +39,8 @@ const vars = [
 ].join(';');
 const others = LANGS.filter((l) => l !== lang);
 const rss = href(lang, 'rss.xml');
+// Visits counted by the site's Matomo, without cookies, when site.config sets it.
+const matomo = SITE.analytics?.matomo;
 ---
 <!doctype html>
 <html lang={lang} data-header={THEME.header} data-dark={THEME.dark ? '' : undefined}
@@ -64,6 +66,7 @@ const rss = href(lang, 'rss.xml');
   {ogImage && <meta property="og:image" content={ogImage}>}
   <meta name="twitter:card" content={ogImage ? 'summary_large_image' : 'summary'}>
   {jsonld && <script type="application/ld+json" set:html={JSON.stringify(jsonld).replace(/</g, '\\u003c')} />}
+  {matomo && <script is:inline set:html={`var _paq=window._paq=window._paq||[];_paq.push(['disableCookies']);_paq.push(['trackPageView']);_paq.push(['enableLinkTracking']);(function(){var u=${JSON.stringify(matomo.url.replace(/\/?$/, '/'))};_paq.push(['setTrackerUrl',u+'matomo.php']);_paq.push(['setSiteId',${JSON.stringify(String(matomo.siteId))}]);var d=document,g=d.createElement('script');g.async=true;g.src=u+'matomo.js';d.head.appendChild(g);})();`} />}
   {CustomHead && <CustomHead lang={lang} />}
   <style is:inline set:html={`:root{${vars}}`} />
 </head>
@@ -114,7 +117,7 @@ const rss = href(lang, 'rss.xml');
         <a href={rss}>RSS</a> · <a href={`${BASE}/llms.txt`}>llms.txt</a> · <a href={`${BASE}/sitemap-index.xml`}>Sitemap</a>
         {SITE.credit !== false && <> · {s.poweredBy} <a href="https://redazia.com" rel="noopener">Redazia</a></>}
       </p>
-      <p class="small">{s.noCookies}</p>
+      <p class="small">{privacyNote(lang)}</p>
       <p class="small">© {new Date().getFullYear()} {SITE.publisher.url
         ? <a href={SITE.publisher.url} rel="noopener">{SITE.publisher.name}</a> : SITE.publisher.name}{[SITE.publisher.address, SITE.publisher.vat].filter(Boolean).map((x) => `, ${x}`).join('')}</p>
     </div>
