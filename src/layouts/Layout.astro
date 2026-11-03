@@ -120,6 +120,7 @@ const matomo = SITE.analytics?.matomo;
       <p><strong>{SITE.name}</strong>{tag && <> · {tag}</>}</p>
       <p>
         <a href={href(lang, paths(lang).about)}>{s.about}</a> ·
+        <a href={href(lang, paths(lang).numbers)}>{s.numbers}</a> ·
         <a href={rss}>RSS</a> · <a href={`${BASE}/llms.txt`}>llms.txt</a> · <a href={`${BASE}/sitemap-index.xml`}>Sitemap</a>
         {SITE.credit !== false && <> · {s.poweredBy} <a href="https://redazia.com" rel="noopener">Redazia</a></>}
       </p>

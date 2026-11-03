@@ -3,6 +3,10 @@ import { render } from 'astro:content';
 import Card from './Card.astro';
 import { SITE, absolute, articleUrl, asset, formatDate, href, langOf, paths, sectionLabel, sectionOf, sectionUrl, t, type Article } from '../lib/site';
 
+// A site may add its own box after the article in src/custom/ArticleEnd.astro.
+const custom = import.meta.glob<{ default: any }>('../custom/ArticleEnd.astro', { eager: true });
+const ArticleEnd = custom['../custom/ArticleEnd.astro']?.default;
+
 interface Props { article: Article; related: Article[] }
 const { article, related } = Astro.props;
 const lang = langOf(article);
@@ -32,6 +36,7 @@ const about = href(lang, paths(lang).about);
       {' '}<a href={about}>{s.about}</a>{SITE.credit !== false && <> · <a href="https://redazia.com" rel="noopener">Redazia</a></>}</p>
   </aside>
 </article>
+{ArticleEnd && <ArticleEnd lang={lang} article={article} />}
 {related.length > 0 && (
   <section class="related">
     <h2>{s.more}</h2>

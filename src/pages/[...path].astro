@@ -6,6 +6,7 @@ import Layout from '../layouts/Layout.astro';
 import Home from '../components/Home.astro';
 import ArticlePage from '../components/ArticlePage.astro';
 import About from '../components/About.astro';
+import Numbers from '../components/Numbers.astro';
 import {
   LANGS, MAIN, SITE, absolute, alternates, articleUrl, articles, asset, href, paths, sectionLabel, sectionOf, sectionSlug, slugOf,
   t, tagline, type Article, type Lang, type Section,
@@ -15,7 +16,8 @@ type Page =
   | { kind: 'home'; lang: Lang; list: Article[]; demo: boolean }
   | { kind: 'article'; lang: Lang; article: Article; related: Article[] }
   | { kind: 'section'; lang: Lang; section: Section; list: Article[]; demo: boolean }
-  | { kind: 'about'; lang: Lang };
+  | { kind: 'about'; lang: Lang }
+  | { kind: 'numbers'; lang: Lang };
 
 export async function getStaticPaths() {
   const out: { params: { path: string | undefined }; props: Page }[] = [];
@@ -28,6 +30,7 @@ export async function getStaticPaths() {
     const p = paths(lang);
     out.push({ params: { path: at(lang) }, props: { kind: 'home', lang, list, demo } });
     out.push({ params: { path: at(lang, p.about) }, props: { kind: 'about', lang } });
+    out.push({ params: { path: at(lang, p.numbers) }, props: { kind: 'numbers', lang } });
     for (const section of SITE.sections) {
       const inSection = list.filter((a) => sectionOf(a) === section);
       out.push({ params: { path: at(lang, p.section, sectionSlug(section, lang)) },
@@ -76,6 +79,9 @@ if (page.kind === 'article') {
   title = sectionLabel(page.section, lang);
 } else if (page.kind === 'about') {
   title = s.about;
+} else if (page.kind === 'numbers') {
+  title = s.numbersTitle;
+  description = s.numbersLead;
 } else {
   jsonld = { '@context': 'https://schema.org', '@type': 'WebSite', name: SITE.name, url: absolute(href(lang)),
              description: tagline(lang) || undefined, inLanguage: lang };
@@ -87,4 +93,5 @@ if (page.kind === 'article') {
   {page.kind === 'section' && <Home list={page.list} lang={lang} title={title} emptyText={s.emptySection} demo={page.demo} />}
   {page.kind === 'article' && <ArticlePage article={page.article} related={page.related} />}
   {page.kind === 'about' && <About lang={lang} />}
+  {page.kind === 'numbers' && <Numbers lang={lang} />}
 </Layout>

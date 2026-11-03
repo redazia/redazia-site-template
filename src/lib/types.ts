@@ -14,6 +14,7 @@ export interface Paths {
   article: string;
   section: string;
   about: string;
+  numbers: string;
 }
 
 export interface SiteConfig {

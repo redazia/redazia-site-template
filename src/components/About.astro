@@ -1,5 +1,5 @@
 ---
-import { SITE, privacyNote, sectionLabel, sectionUrl, t, type Lang } from '../lib/site';
+import { SITE, href, paths, privacyNote, sectionLabel, sectionUrl, t, type Lang } from '../lib/site';
 
 interface Props { lang: Lang }
 const { lang } = Astro.props;
@@ -12,6 +12,7 @@ const p = SITE.publisher;
   <h2>{s.aboutHow}</h2>
   <ol>{s.aboutSteps.map((x) => <li>{x}</li>)}</ol>
   <p>{s.aboutErrors} <a href={`mailto:${SITE.contact}`}>{SITE.contact}</a>{s.aboutErrorsAfter}</p>
+  <p><a href={href(lang, paths(lang).numbers)}>{s.numbersTitle} →</a></p>
   {SITE.sections.length > 0 && (
     <>
       <h2>{s.sections}</h2>

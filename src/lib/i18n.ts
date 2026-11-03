@@ -9,11 +9,11 @@ export const LOCALES: Record<Lang, string> = {
 };
 
 export const DEFAULT_PATHS: Record<Lang, Paths> = {
-  it: { article: 'articoli', section: 'rubriche', about: 'chi-siamo' },
-  en: { article: 'articles', section: 'sections', about: 'about' },
-  de: { article: 'artikel', section: 'rubriken', about: 'ueber-uns' },
-  fr: { article: 'articles', section: 'rubriques', about: 'a-propos' },
-  es: { article: 'articulos', section: 'secciones', about: 'quienes-somos' },
+  it: { article: 'articoli', section: 'rubriche', about: 'chi-siamo', numbers: 'numeri' },
+  en: { article: 'articles', section: 'sections', about: 'about', numbers: 'numbers' },
+  de: { article: 'artikel', section: 'rubriken', about: 'ueber-uns', numbers: 'zahlen' },
+  fr: { article: 'articles', section: 'rubriques', about: 'a-propos', numbers: 'chiffres' },
+  es: { article: 'articulos', section: 'secciones', about: 'quienes-somos', numbers: 'cifras' },
 };
 
 const it = {
@@ -52,6 +52,20 @@ const it = {
   aboutErrors: 'Hai trovato un errore? Scrivi a',
   aboutErrorsAfter: ': l\'articolo viene corretto o ritirato.',
   publisher: 'Editore',
+  numbers: 'In numeri',
+  numbersTitle: 'La redazione in numeri',
+  numbersLead: 'Cosa ha fatto la redazione di intelligenza artificiale di questo sito, contato direttamente dagli articoli pubblicati. La pagina si aggiorna a ogni nuovo articolo.',
+  nArticles: 'Articoli pubblicati',
+  nWeek: 'Negli ultimi 7 giorni',
+  nSources: 'Fonti citate per articolo, in media',
+  nOutlets: 'Testate e siti diversi citati',
+  nCorrected: 'Articoli corretti dopo la pubblicazione',
+  nLanguages: 'Articoli per lingua',
+  nSections: 'Articoli per rubrica',
+  nSince: 'Primo articolo',
+  nCorrectedList: 'Gli articoli corretti',
+  nCorrectedText: 'Ogni correzione è scritta in fondo all\'articolo, con la data e cosa è cambiato.',
+  noteMarks: ['Aggiornamento del', 'Rettifica del'],
 };
 
 type Strings = typeof it;
@@ -92,6 +106,20 @@ const en: Strings = {
   aboutErrors: 'Found a mistake? Write to',
   aboutErrorsAfter: ': the article will be corrected or withdrawn.',
   publisher: 'Publisher',
+  numbers: 'By the numbers',
+  numbersTitle: 'The newsroom by the numbers',
+  numbersLead: 'What this site\'s artificial intelligence newsroom has done, counted straight from the published articles. The page updates with every new article.',
+  nArticles: 'Articles published',
+  nWeek: 'In the last 7 days',
+  nSources: 'Sources cited per article, on average',
+  nOutlets: 'Different outlets and sites cited',
+  nCorrected: 'Articles corrected after publication',
+  nLanguages: 'Articles by language',
+  nSections: 'Articles by section',
+  nSince: 'First article',
+  nCorrectedList: 'The corrected articles',
+  nCorrectedText: 'Every correction is written at the end of the article, with the date and what changed.',
+  noteMarks: ['Update,', 'Correction,'],
 };
 
 const de: Strings = {
@@ -130,6 +158,20 @@ const de: Strings = {
   aboutErrors: 'Einen Fehler gefunden? Schreiben Sie an',
   aboutErrorsAfter: ': Der Artikel wird korrigiert oder zurückgezogen.',
   publisher: 'Herausgeber',
+  numbers: 'In Zahlen',
+  numbersTitle: 'Die Redaktion in Zahlen',
+  numbersLead: 'Was die KI-Redaktion dieser Website getan hat, direkt aus den veröffentlichten Artikeln gezählt. Die Seite wird mit jedem neuen Artikel aktualisiert.',
+  nArticles: 'Veröffentlichte Artikel',
+  nWeek: 'In den letzten 7 Tagen',
+  nSources: 'Zitierte Quellen pro Artikel, im Durchschnitt',
+  nOutlets: 'Verschiedene zitierte Medien und Websites',
+  nCorrected: 'Nach der Veröffentlichung korrigierte Artikel',
+  nLanguages: 'Artikel nach Sprache',
+  nSections: 'Artikel nach Rubrik',
+  nSince: 'Erster Artikel',
+  nCorrectedList: 'Die korrigierten Artikel',
+  nCorrectedText: 'Jede Korrektur steht am Ende des Artikels, mit Datum und was sich geändert hat.',
+  noteMarks: ['Aktualisierung', 'Korrektur'],
 };
 
 const fr: Strings = {
@@ -168,6 +210,20 @@ const fr: Strings = {
   aboutErrors: 'Vous avez trouvé une erreur ? Écrivez à',
   aboutErrorsAfter: ' : l\'article sera corrigé ou retiré.',
   publisher: 'Éditeur',
+  numbers: 'En chiffres',
+  numbersTitle: 'La rédaction en chiffres',
+  numbersLead: 'Ce qu\'a fait la rédaction d\'intelligence artificielle de ce site, compté directement à partir des articles publiés. La page se met à jour à chaque nouvel article.',
+  nArticles: 'Articles publiés',
+  nWeek: 'Ces 7 derniers jours',
+  nSources: 'Sources citées par article, en moyenne',
+  nOutlets: 'Médias et sites différents cités',
+  nCorrected: 'Articles corrigés après publication',
+  nLanguages: 'Articles par langue',
+  nSections: 'Articles par rubrique',
+  nSince: 'Premier article',
+  nCorrectedList: 'Les articles corrigés',
+  nCorrectedText: 'Chaque correction est indiquée à la fin de l\'article, avec la date et ce qui a changé.',
+  noteMarks: ['Mise à jour', 'Rectificatif'],
 };
 
 const es: Strings = {
@@ -206,6 +262,20 @@ const es: Strings = {
   aboutErrors: '¿Has encontrado un error? Escribe a',
   aboutErrorsAfter: ': el artículo se corregirá o retirará.',
   publisher: 'Editor',
+  numbers: 'En cifras',
+  numbersTitle: 'La redacción en cifras',
+  numbersLead: 'Lo que ha hecho la redacción de inteligencia artificial de este sitio, contado directamente a partir de los artículos publicados. La página se actualiza con cada nuevo artículo.',
+  nArticles: 'Artículos publicados',
+  nWeek: 'En los últimos 7 días',
+  nSources: 'Fuentes citadas por artículo, de media',
+  nOutlets: 'Medios y sitios distintos citados',
+  nCorrected: 'Artículos corregidos después de publicarse',
+  nLanguages: 'Artículos por idioma',
+  nSections: 'Artículos por sección',
+  nSince: 'Primer artículo',
+  nCorrectedList: 'Los artículos corregidos',
+  nCorrectedText: 'Cada corrección figura al final del artículo, con la fecha y lo que cambió.',
+  noteMarks: ['Actualización', 'Corrección'],
 };
 
 export const STRINGS: Record<Lang, Strings> = { it, en, de, fr, es };

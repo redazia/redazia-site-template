@@ -1,6 +1,8 @@
 import { getCollection, type CollectionEntry } from 'astro:content';
 import config from './config.mjs';
-import { DEFAULT_PATHS, LOCALES, STRINGS } from './i18n';
+import { DEFAULT_PATHS, LANG_NAMES, LOCALES, STRINGS } from './i18n';
+
+export { LANG_NAMES };
 import { themeNamed } from './themes';
 import type { Lang, Paths, SectionConfig, SiteConfig } from './types';
 

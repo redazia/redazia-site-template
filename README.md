@@ -93,6 +93,7 @@ Change what you like in these places, and only there:
 | `src/custom/custom.css` | Your styles, loaded after the theme's |
 | `src/custom/Head.astro` | Anything for `<head>`: fonts, verification tags, analytics |
 | `src/custom/Header.astro`, `Footer.astro` | Create them to replace the header or the footer |
+| `src/custom/ArticleEnd.astro` | Create it to add a box under every article (newsletter, offer, invitation) |
 | `public/brand/` | Logo and other pictures |
 
 Every Monday the **Template update** workflow (`.github/workflows/template-update.yml`) brings the template's improvements into your site as a pull request. Your files above, the articles and the pictures are never touched, so the preview deploy shows the result and you merge it with a click. If you changed a template file too (say `src/layouts/Layout.astro`), the pull request names it so you can look at it.
