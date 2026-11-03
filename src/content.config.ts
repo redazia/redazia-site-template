@@ -18,6 +18,9 @@ const article = z.object({
   image_alt: z.string().optional(),
   author: z.string().optional(),
   draft: z.boolean().optional(),
+  // A translation names its original by the original's slug: the language
+  // switch then leads from one to the other.
+  translation_of: z.string().optional(),
 });
 
 // The id keeps the language folder ("it/my-article"), even when the article

@@ -7,7 +7,7 @@ import Home from '../components/Home.astro';
 import ArticlePage from '../components/ArticlePage.astro';
 import About from '../components/About.astro';
 import {
-  LANGS, MAIN, SITE, absolute, articleUrl, articles, asset, href, paths, sectionLabel, sectionOf, sectionSlug, slugOf,
+  LANGS, MAIN, SITE, absolute, alternates, articleUrl, articles, asset, href, paths, sectionLabel, sectionOf, sectionSlug, slugOf,
   t, tagline, type Article, type Lang, type Section,
 } from '../lib/site';
 
@@ -49,7 +49,9 @@ const s = t(lang);
 let title: string | undefined;
 let description: string | undefined;
 let jsonld: object | undefined;
+let others: Partial<Record<Lang, string>> = {};
 if (page.kind === 'article') {
+  others = await alternates(page.article);
   const a = page.article.data;
   title = a.title;
   description = a.description;
@@ -80,7 +82,7 @@ if (page.kind === 'article') {
 }
 ---
 <Layout lang={lang} title={title} description={description} image={page.kind === 'article' ? page.article.data.image : undefined}
-        type={page.kind === 'article' ? 'article' : 'website'} jsonld={jsonld}>
+        type={page.kind === 'article' ? 'article' : 'website'} jsonld={jsonld} alternates={others}>
   {page.kind === 'home' && <><h1 class="sr-only">{SITE.name}</h1><Home list={page.list} lang={lang} bySection demo={page.demo} /></>}
   {page.kind === 'section' && <Home list={page.list} lang={lang} title={title} emptyText={s.emptySection} demo={page.demo} />}
   {page.kind === 'article' && <ArticlePage article={page.article} related={page.related} />}

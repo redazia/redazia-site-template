@@ -19,8 +19,11 @@ interface Props {
   image?: string;
   type?: 'website' | 'article';
   jsonld?: object;
+  // The same page in the other languages; the others lead to their home.
+  alternates?: Partial<Record<Lang, string>>;
 }
-const { lang, title, description, image, type = 'website', jsonld } = Astro.props;
+const { lang, title, description, image, type = 'website', jsonld, alternates = {} } = Astro.props;
+const other = (l: Lang) => alternates[l] || href(l);
 const s = t(lang);
 const tag = tagline(lang);
 const fullTitle = title ? `${title} | ${SITE.name}` : tag ? `${SITE.name}: ${tag}` : SITE.name;
@@ -51,7 +54,7 @@ const matomo = SITE.analytics?.matomo;
   <title>{fullTitle}</title>
   {desc && <meta name="description" content={desc}>}
   <link rel="canonical" href={canonical}>
-  {LANGS.length > 1 && LANGS.map((l) => <link rel="alternate" hreflang={l} href={absolute(href(l))}>)}
+  {LANGS.length > 1 && LANGS.map((l) => <link rel="alternate" hreflang={l} href={absolute(l === lang ? Astro.url.pathname : other(l))}>)}
   <link rel="alternate" type="application/rss+xml" title={SITE.name} href={rss}>
   <link rel="icon" href={`${BASE}/favicon.svg`} type="image/svg+xml">
   <meta name="color-scheme" content={THEME.dark ? 'dark' : 'light'}>
@@ -83,14 +86,14 @@ const matomo = SITE.analytics?.matomo;
       </div>
     </div>
   )}
-  {CustomHeader ? <CustomHeader lang={lang} /> : (
+  {CustomHeader ? <CustomHeader lang={lang} alternates={alternates} /> : (
   <header class="site-header">
     <div class="wrap top">
       <a class="logo" href={home}>{SITE.name}</a>
       {tag && <p class="tagline">{tag}</p>}
       {others.length > 0 && (
         <nav class="langs" aria-label={s.languages}>
-          {others.map((l) => <a href={href(l)} hreflang={l} lang={l}>{LANG_NAMES[l]}</a>)}
+          {others.map((l) => <a href={other(l)} hreflang={l} lang={l}>{LANG_NAMES[l]}</a>)}
         </nav>
       )}
     </div>
