@@ -8,7 +8,7 @@ and `public/brand/`.
 |---|---|
 | `custom.css` | Your styles, loaded after the theme's. CSS variables: `--accent`, `--bg`, `--ink`, `--heading`, `--body`… |
 | `Head.astro` | Added inside `<head>` on every page. |
-| `Header.astro` | If you create it, it replaces the site's header. Props: `lang`. |
+| `Header.astro` | If you create it, it replaces the site's header. Props: `lang`, and `alternates` (the same page in the other languages, by language). |
 | `Footer.astro` | If you create it, it replaces the site's footer. Props: `lang`. |
 
 Put your logo and other pictures in `public/brand/` and use them as `/brand/logo.svg`.

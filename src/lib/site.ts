@@ -83,6 +83,19 @@ export function sectionOf(a: Article): Section | undefined {
 
 /** The articles of a language, newest first. Without any, the samples
  * (when `demo` is on), so the design shows before the first publication. */
+/** The same article in the other languages: its original and the
+ * translations that name the same original (`translation_of`). */
+export async function alternates(a: Article): Promise<Partial<Record<Lang, string>>> {
+  const key = a.data.translation_of || slugOf(a);
+  const out: Partial<Record<Lang, string>> = {};
+  for (const lang of LANGS) {
+    const { list } = await articles(lang);
+    const same = list.find((x) => (x.data.translation_of || slugOf(x)) === key);
+    if (same) out[lang] = articleUrl(same);
+  }
+  return out;
+}
+
 export async function articles(lang: Lang): Promise<{ list: Article[]; demo: boolean }> {
   const all = await getCollection('articles', (a) => langOf(a) === lang && !a.data.draft);
   if (all.length || SITE.demo === false) return { list: sorted(all), demo: false };
