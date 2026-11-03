@@ -57,7 +57,9 @@ const about = href(lang, paths(lang).about);
   .body :global(sup a) { text-decoration: none; font: 600 12px var(--body); }
   .body :global(.footnotes), .body :global(section[data-footnotes]) { font: 14px/1.5 var(--body); color: var(--ink-2); }
   .body :global(.footnotes li) { margin-bottom: 6px; }
-  .body :global(.data-footnote-backref) { text-decoration: none; }
+  /* The notes follow the article's own "Fonti"/"Sources" heading: the English
+     "Footnotes" label and the back arrows the Markdown adds are not shown. */
+  .body :global(#footnote-label), .body :global(.data-footnote-backref) { display: none; }
   .body :global(ul), .body :global(ol) { padding-left: 22px; }
   .body :global(em) { color: var(--ink-2); }
   .body :global(table) { border-collapse: collapse; width: 100%; font: 15px var(--body); display: block; overflow-x: auto; }
