@@ -1,7 +1,7 @@
 ---
 // "The newsroom by the numbers": counted from the published articles at
 // build time, so it changes with every article and needs no database.
-import { LANGS, LANG_NAMES, SITE, articleUrl, articles, formatDate, sectionLabel, sectionOf, t, type Article, type Lang } from '../lib/site';
+import { LANGS, LANG_NAMES, SITE, articles, formatDate, sectionLabel, sectionOf, t, type Article, type Lang } from '../lib/site';
 
 interface Props { lang: Lang }
 const { lang } = Astro.props;
@@ -10,8 +10,6 @@ const { list } = await articles(lang);
 
 const notes = (a: Article) => (a.body || '').split('\n').filter((l) => /^\[\^[^\]]+\]:\s/.test(l));
 const host = (url: string) => { try { return new URL(url).hostname.replace(/^www\./, ''); } catch { return ''; } };
-const corrected = list.filter((a) => (a.body || '').split('\n').some((l) =>
-  s.noteMarks.some((mark) => l.startsWith(`_${mark}`))));
 const cited = list.map((a) => notes(a));
 const outlets = new Set(cited.flat().flatMap((l) => [...l.matchAll(/\]\((https?:\/\/[^)\s]+)\)/g)].map((m) => host(m[1]))).filter(Boolean));
 const withSources = cited.filter((c) => c.length);
@@ -31,7 +29,6 @@ const num = (n: number, digits = 0) => new Intl.NumberFormat(lang, { maximumFrac
     <div class="tile"><span class="v">{num(week)}</span><span class="l">{s.nWeek}</span></div>
     <div class="tile"><span class="v">{num(perArticle, 1)}</span><span class="l">{s.nSources}</span></div>
     <div class="tile"><span class="v">{num(outlets.size)}</span><span class="l">{s.nOutlets}</span></div>
-    <div class="tile"><span class="v">{num(corrected.length)}</span><span class="l">{s.nCorrected}</span></div>
     {first && <div class="tile"><span class="v small">{formatDate(first, lang, false)}</span><span class="l">{s.nSince}</span></div>}
   </div>
   {LANGS.length > 1 && (
@@ -44,13 +41,6 @@ const num = (n: number, digits = 0) => new Intl.NumberFormat(lang, { maximumFrac
     <>
       <h2>{s.nSections}</h2>
       <ul class="rows">{bySection.map(([name, n]) => <li><span>{name}</span><b>{num(n)}</b></li>)}</ul>
-    </>
-  )}
-  {corrected.length > 0 && (
-    <>
-      <h2>{s.nCorrectedList}</h2>
-      <p>{s.nCorrectedText}</p>
-      <ul class="links">{corrected.map((a) => <li><a href={articleUrl(a)}>{a.data.title}</a></li>)}</ul>
     </>
   )}
 </article>
