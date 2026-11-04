@@ -19,7 +19,9 @@ interface Props {
   image?: string;
   type?: 'website' | 'article';
   jsonld?: object;
-  // The same page in the other languages; the others lead to their home.
+  // The same page in the other languages. A list page leads to the other home;
+  // an article without a translation has no alternate (search engines would
+  // take the other home for its translation) and its switch leads home.
   alternates?: Partial<Record<Lang, string>>;
 }
 const { lang, title, description, image, type = 'website', jsonld, alternates = {} } = Astro.props;
@@ -54,7 +56,8 @@ const matomo = SITE.analytics?.matomo;
   <title>{fullTitle}</title>
   {desc && <meta name="description" content={desc}>}
   <link rel="canonical" href={canonical}>
-  {LANGS.length > 1 && LANGS.map((l) => <link rel="alternate" hreflang={l} href={absolute(l === lang ? Astro.url.pathname : other(l))}>)}
+  {LANGS.length > 1 && LANGS.filter((l) => l === lang || type !== 'article' || alternates[l])
+    .map((l) => <link rel="alternate" hreflang={l} href={absolute(l === lang ? Astro.url.pathname : other(l))}>)}
   <link rel="alternate" type="application/rss+xml" title={SITE.name} href={rss}>
   <link rel="icon" href={`${BASE}/favicon.svg`} type="image/svg+xml">
   <meta name="color-scheme" content={THEME.dark ? 'dark' : 'light'}>
@@ -93,7 +96,7 @@ const matomo = SITE.analytics?.matomo;
       {tag && <p class="tagline">{tag}</p>}
       {others.length > 0 && (
         <nav class="langs" aria-label={s.languages}>
-          {others.map((l) => <a href={other(l)} hreflang={l} lang={l}>{LANG_NAMES[l]}</a>)}
+          {others.map((l) => <a href={other(l)} hreflang={type !== 'article' || alternates[l] ? l : undefined} lang={l}>{LANG_NAMES[l]}</a>)}
         </nav>
       )}
     </div>
@@ -117,6 +120,7 @@ const matomo = SITE.analytics?.matomo;
       <p><strong>{SITE.name}</strong>{tag && <> · {tag}</>}</p>
       <p>
         <a href={href(lang, paths(lang).about)}>{s.about}</a> ·
+        <a href={href(lang, paths(lang).numbers)}>{s.numbers}</a> ·
         <a href={rss}>RSS</a> · <a href={`${BASE}/llms.txt`}>llms.txt</a> · <a href={`${BASE}/sitemap-index.xml`}>Sitemap</a>
         {SITE.credit !== false && <> · {s.poweredBy} <a href="https://redazia.com" rel="noopener">Redazia</a></>}
       </p>

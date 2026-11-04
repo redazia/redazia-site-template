@@ -1,0 +1,63 @@
+---
+// "The newsroom by the numbers": counted from the published articles at
+// build time, so it changes with every article and needs no database.
+import { LANGS, LANG_NAMES, SITE, articles, formatDate, sectionLabel, sectionOf, t, type Article, type Lang } from '../lib/site';
+
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const s = t(lang);
+const { list } = await articles(lang);
+
+const notes = (a: Article) => (a.body || '').split('\n').filter((l) => /^\[\^[^\]]+\]:\s/.test(l));
+const host = (url: string) => { try { return new URL(url).hostname.replace(/^www\./, ''); } catch { return ''; } };
+const cited = list.map((a) => notes(a));
+const outlets = new Set(cited.flat().flatMap((l) => [...l.matchAll(/\]\((https?:\/\/[^)\s]+)\)/g)].map((m) => host(m[1]))).filter(Boolean));
+const withSources = cited.filter((c) => c.length);
+const perArticle = withSources.length ? withSources.reduce((n, c) => n + c.length, 0) / withSources.length : 0;
+const week = list.filter((a) => a.data.date.getTime() >= Date.now() - 7 * 86400_000).length;
+const first = list.length ? list[list.length - 1].data.date : undefined;
+const byLang = await Promise.all(LANGS.map(async (l) => [l, (await articles(l)).list.length] as const));
+const bySection = SITE.sections.map((x) => [sectionLabel(x, lang), list.filter((a) => sectionOf(a) === x).length] as const)
+  .filter(([, n]) => n > 0).sort((a, b) => b[1] - a[1]);
+const num = (n: number, digits = 0) => new Intl.NumberFormat(lang, { maximumFractionDigits: digits, minimumFractionDigits: digits }).format(n);
+---
+<article class="numbers">
+  <h1>{s.numbersTitle}</h1>
+  <p class="lead">{s.numbersLead}</p>
+  <div class="tiles">
+    <div class="tile"><span class="v">{num(list.length)}</span><span class="l">{s.nArticles}</span></div>
+    <div class="tile"><span class="v">{num(week)}</span><span class="l">{s.nWeek}</span></div>
+    <div class="tile"><span class="v">{num(perArticle, 1)}</span><span class="l">{s.nSources}</span></div>
+    <div class="tile"><span class="v">{num(outlets.size)}</span><span class="l">{s.nOutlets}</span></div>
+    {first && <div class="tile"><span class="v small">{formatDate(first, lang, false)}</span><span class="l">{s.nSince}</span></div>}
+  </div>
+  {LANGS.length > 1 && (
+    <>
+      <h2>{s.nLanguages}</h2>
+      <ul class="rows">{byLang.map(([l, n]) => <li><span>{LANG_NAMES[l]}</span><b>{num(n)}</b></li>)}</ul>
+    </>
+  )}
+  {bySection.length > 0 && (
+    <>
+      <h2>{s.nSections}</h2>
+      <ul class="rows">{bySection.map(([name, n]) => <li><span>{name}</span><b>{num(n)}</b></li>)}</ul>
+    </>
+  )}
+</article>
+
+<style>
+  .numbers { max-width: 760px; margin: 0 auto; }
+  h1 { font-size: 40px; margin: 0 0 16px; }
+  h2 { font-size: 24px; margin: 36px 0 12px; }
+  .lead { font: 20px/1.55 var(--article); color: var(--ink-2); }
+  .tiles { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; margin-top: 24px; }
+  .tile { display: flex; flex-direction: column; gap: 6px; padding: 16px; border: 1px solid var(--line); border-radius: var(--radius); }
+  .v { font-size: 34px; font-weight: 700; line-height: 1.1; }
+  .v.small { font-size: 20px; }
+  .l { font-size: 14px; color: var(--muted); }
+  .rows, .links { list-style: none; padding: 0; margin: 0; }
+  .rows li { display: flex; justify-content: space-between; gap: 12px; padding: 8px 0; border-bottom: 1px solid var(--line); }
+  .links li { padding: 6px 0; }
+  a { color: var(--accent); }
+  @media (max-width: 700px) { .tiles { grid-template-columns: 1fr 1fr; } h1 { font-size: 30px; } }
+</style>

@@ -10,5 +10,6 @@ and `public/brand/`.
 | `Head.astro` | Added inside `<head>` on every page. |
 | `Header.astro` | If you create it, it replaces the site's header. Props: `lang`, and `alternates` (the same page in the other languages, by language). |
 | `Footer.astro` | If you create it, it replaces the site's footer. Props: `lang`. |
+| `ArticleEnd.astro` | If you create it, it is shown under every article, before "More articles": a newsletter, an offer, an invitation. Props: `lang`, `article`. |
 
 Put your logo and other pictures in `public/brand/` and use them as `/brand/logo.svg`.

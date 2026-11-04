@@ -65,6 +65,7 @@ Cambia quello che vuoi in questi posti, e solo lì:
 | `src/custom/custom.css` | I tuoi stili, caricati dopo quelli dello stile |
 | `src/custom/Head.astro` | Ciò che va in `<head>`: caratteri, tag di verifica, statistiche |
 | `src/custom/Header.astro`, `Footer.astro` | Creali per sostituire testata o piè di pagina |
+| `src/custom/ArticleEnd.astro` | Crealo per aggiungere un riquadro sotto ogni articolo (newsletter, offerta, invito) |
 | `public/brand/` | Logo e altre immagini |
 
 Ogni lunedì l'azione **Template update** (`.github/workflows/template-update.yml`) porta i miglioramenti del modello nel tuo sito come pull request. I tuoi file qui sopra, gli articoli e le immagini non vengono mai toccati: l'anteprima del deploy mostra il risultato e la unisci con un clic. Se hai cambiato anche un file del modello (per esempio `src/layouts/Layout.astro`), la pull request lo indica perché tu lo guardi.
