@@ -1,15 +1,25 @@
 ---
 import Card from './Card.astro';
-import { SITE, THEME, sectionLabel, sectionOf, sectionUrl, t, type Article, type Lang } from '../lib/site';
+import { SITE, THEME, articleUrl, formatDate, sectionLabel, sectionOf, sectionUrl, t, type Article, type Lang } from '../lib/site';
 
 interface Props { list: Article[]; lang: Lang; title?: string; bySection?: boolean; emptyText?: string; demo?: boolean }
 const { list, lang, title, bySection = false, emptyText, demo = false } = Astro.props;
 const s = t(lang);
 const home = THEME.home;
 const [lead, ...rest] = list;
+// How many articles the top of the page shows, by layout.
+const shown = { front: 17, grid: 16, list: 30, stream: 60 }[home] ?? 16;
+// The sections under the top show only articles not already above it: the
+// same article twice on one page looks like padding, to readers and to
+// search engines alike.
+const above = new Set(list.slice(0, shown));
 const groups = bySection && (home === 'front' || home === 'grid')
-  ? SITE.sections.map((x) => ({ x, items: list.slice(1).filter((a) => sectionOf(a) === x).slice(0, 3) })).filter((g) => g.items.length)
+  ? SITE.sections.map((x) => ({ x, items: list.filter((a) => !above.has(a) && sectionOf(a) === x).slice(0, 3) }))
+      .filter((g) => g.items.length)
   : [];
+// A section's page links every one of its articles: the older ones as a
+// plain list, so readers and crawlers reach them without a search.
+const older = !bySection && title ? list.slice(shown) : [];
 ---
 {title && <h1 class="page-title">{title}</h1>}
 {demo && <p class="demo-note">{s.demo}</p>}
@@ -32,6 +42,14 @@ const groups = bySection && (home === 'front' || home === 'grid')
     )}
     {home === 'list' && <section class="column">{list.slice(0, 30).map((a, i) => <Card article={a} size="row" eager={i < 2} />)}</section>}
     {home === 'stream' && <section class="column">{list.slice(0, 60).map((a) => <Card article={a} size="text" />)}</section>}
+    {older.length > 0 && (
+      <section class="older">
+        <h2 class="group-title">{s.more}</h2>
+        <ul>{older.map((a) => (
+          <li><a href={articleUrl(a)}>{a.data.title}</a> <time datetime={a.data.date.toISOString()}>{formatDate(a.data.date, lang, false)}</time></li>
+        ))}</ul>
+      </section>
+    )}
     {groups.map((g) => (
       <section class="group">
         <h2 class="group-title"><a href={sectionUrl(g.x, lang)}>{sectionLabel(g.x, lang)}</a></h2>
@@ -61,6 +79,11 @@ const groups = bySection && (home === 'front' || home === 'grid')
   .group-title { margin: 0; font-size: 24px; }
   .group-title a { text-decoration: none; }
   .group .grid { padding-top: 18px; }
+  .older { border-top: 3px solid var(--ink); padding-top: 10px; margin-top: 12px; }
+  .older ul { list-style: none; margin: 18px 0 0; padding: 0; columns: 2; column-gap: 40px; }
+  .older li { break-inside: avoid; padding: 8px 0; border-bottom: 1px solid var(--line); }
+  .older li a { font-weight: 600; text-decoration: none; }
+  .older time { display: block; font-size: 13px; color: var(--muted, inherit); opacity: .8; }
   @media (max-width: 900px) {
     .top, .hero :global(.card) { grid-template-columns: 1fr; gap: 20px; }
     .hero.overlay :global(.pic) { aspect-ratio: 4 / 3; }
@@ -68,5 +91,5 @@ const groups = bySection && (home === 'front' || home === 'grid')
     .hero.overlay :global(.desc) { display: none; }
     .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   }
-  @media (max-width: 600px) { .grid { grid-template-columns: 1fr; } }
+  @media (max-width: 600px) { .grid { grid-template-columns: 1fr; } .older ul { columns: 1; } }
 </style>
