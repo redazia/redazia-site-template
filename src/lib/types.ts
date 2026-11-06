@@ -3,11 +3,18 @@ export type Lang = 'it' | 'en' | 'de' | 'fr' | 'es';
 export interface SectionConfig {
   /** How Redazia files the article: the `section` of its front matter. */
   name: string;
-  it?: { slug: string; label: string };
-  en?: { slug: string; label: string };
-  de?: { slug: string; label: string };
-  fr?: { slug: string; label: string };
-  es?: { slug: string; label: string };
+  it?: SectionText;
+  en?: SectionText;
+  de?: SectionText;
+  fr?: SectionText;
+  es?: SectionText;
+}
+
+export interface SectionText {
+  slug: string;
+  label: string;
+  /** A sentence or two under the section's title: what readers find there. */
+  intro?: string;
 }
 
 export interface Paths {

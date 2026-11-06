@@ -47,7 +47,7 @@ Pubblica un articolo a mano e controllalo sul sito prima di accendere la redazio
 
 ## Rubriche
 
-`name` è il nome con cui Redazia archivia l'articolo: usa gli stessi nomi nelle rubriche della redazione automatica (Sito e profilo › Redazione automatica). Ogni lingua ha la sua etichetta e il suo indirizzo. Un articolo con una rubrica che non è nell'elenco compare comunque in home.
+`name` è il nome con cui Redazia archivia l'articolo: usa gli stessi nomi nelle rubriche della redazione automatica (Sito e profilo › Redazione automatica). Ogni lingua ha la sua etichetta e il suo indirizzo, e può avere `intro`: una frase o due sotto il titolo della rubrica, usata anche come descrizione per i motori di ricerca. Un articolo con una rubrica che non è nell'elenco compare comunque in home.
 
 ## Stili
 

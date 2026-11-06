@@ -9,7 +9,7 @@ import About from '../components/About.astro';
 import Numbers from '../components/Numbers.astro';
 import {
   BASE, LANGS, MAIN, SITE, absolute, alternates, articleUrl, articles, asset, href, paths, sectionLabel, sectionOf, sectionSlug, slugOf,
-  t, tagline, type Article, type Lang, type Section,
+  sectionIntro, t, tagline, type Article, type Lang, type Section,
 } from '../lib/site';
 
 type Page =
@@ -83,7 +83,7 @@ if (page.kind === 'article') {
   };
 } else if (page.kind === 'section') {
   title = sectionLabel(page.section, lang);
-  description = [`${title} · ${SITE.name}`, tagline(lang)].filter(Boolean).join(': ');
+  description = sectionIntro(page.section, lang) || [`${title} · ${SITE.name}`, tagline(lang)].filter(Boolean).join(': ');
   jsonld = { '@context': 'https://schema.org', '@type': 'CollectionPage', name: title, description,
              url: absolute(href(lang, paths(lang).section, sectionSlug(page.section, lang))), inLanguage: lang,
              isPartOf: { '@id': `${absolute(href(lang))}#website` }, mainEntity: itemList(page.list) };
@@ -112,7 +112,8 @@ if (page.kind === 'article') {
 <Layout lang={lang} title={title} description={description} image={page.kind === 'article' ? page.article.data.image : undefined}
         type={page.kind === 'article' ? 'article' : 'website'} jsonld={jsonld} alternates={others}>
   {page.kind === 'home' && <><h1 class="sr-only">{SITE.name}</h1><Home list={page.list} lang={lang} bySection demo={page.demo} /></>}
-  {page.kind === 'section' && <Home list={page.list} lang={lang} title={title} emptyText={s.emptySection} demo={page.demo} />}
+  {page.kind === 'section' && <Home list={page.list} lang={lang} title={title} intro={sectionIntro(page.section, lang)}
+                                    emptyText={s.emptySection} demo={page.demo} />}
   {page.kind === 'article' && <ArticlePage article={page.article} related={page.related} />}
   {page.kind === 'about' && <About lang={lang} />}
   {page.kind === 'numbers' && <Numbers lang={lang} />}
