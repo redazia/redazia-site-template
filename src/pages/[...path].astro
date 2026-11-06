@@ -8,7 +8,7 @@ import ArticlePage from '../components/ArticlePage.astro';
 import About from '../components/About.astro';
 import Numbers from '../components/Numbers.astro';
 import {
-  LANGS, MAIN, SITE, absolute, alternates, articleUrl, articles, asset, href, paths, sectionLabel, sectionOf, sectionSlug, slugOf,
+  BASE, LANGS, MAIN, SITE, absolute, alternates, articleUrl, articles, asset, href, paths, sectionLabel, sectionOf, sectionSlug, slugOf,
   t, tagline, type Article, type Lang, type Section,
 } from '../lib/site';
 
@@ -47,6 +47,9 @@ export async function getStaticPaths() {
 }
 
 const page = Astro.props as Page;
+// The first articles of a list, in order, as schema.org reads them.
+const itemList = (list: Article[]) => ({ '@type': 'ItemList', itemListElement: list.slice(0, 20).map((a, i) => (
+  { '@type': 'ListItem', position: i + 1, url: absolute(articleUrl(a)), name: a.data.title })) });
 const lang = page.lang;
 const s = t(lang);
 let title: string | undefined;
@@ -65,6 +68,8 @@ if (page.kind === 'article') {
     headline: a.title,
     description: a.description,
     datePublished: a.date.toISOString(),
+    dateModified: a.date.toISOString(),
+    isAccessibleForFree: true,
     inLanguage: lang,
     mainEntityOfPage: absolute(articleUrl(page.article)),
     image: a.image ? [absolute(asset(a.image)!)] : undefined,
@@ -74,17 +79,34 @@ if (page.kind === 'article') {
       ? { '@type': 'Organization', name: `${SITE.name} AI newsroom`, url: absolute(href(lang, paths(lang).about)) }
       : { '@type': 'Organization', name: a.author || SITE.name, url: absolute(href(lang)) },
     publisher: { '@type': 'Organization', name: SITE.publisher.name || SITE.name, url: SITE.publisher.url || SITE.url },
+    isPartOf: { '@id': `${absolute(href(lang))}#website` },
   };
 } else if (page.kind === 'section') {
   title = sectionLabel(page.section, lang);
+  description = [`${title} · ${SITE.name}`, tagline(lang)].filter(Boolean).join(': ');
+  jsonld = { '@context': 'https://schema.org', '@type': 'CollectionPage', name: title, description,
+             url: absolute(href(lang, paths(lang).section, sectionSlug(page.section, lang))), inLanguage: lang,
+             isPartOf: { '@id': `${absolute(href(lang))}#website` }, mainEntity: itemList(page.list) };
 } else if (page.kind === 'about') {
   title = s.about;
 } else if (page.kind === 'numbers') {
   title = s.numbersTitle;
   description = s.numbersLead;
 } else {
-  jsonld = { '@context': 'https://schema.org', '@type': 'WebSite', name: SITE.name, url: absolute(href(lang)),
-             description: tagline(lang) || undefined, inLanguage: lang };
+  // The site, who publishes it and its latest articles: what search engines
+  // and AI assistants read to know the site and its news.
+  description = tagline(lang) || undefined;
+  jsonld = { '@context': 'https://schema.org', '@graph': [
+    { '@type': 'WebSite', '@id': `${absolute(href(lang))}#website`, name: SITE.name, url: absolute(href(lang)),
+      description, inLanguage: lang, publisher: { '@id': `${absolute(href(MAIN))}#publisher` } },
+    { '@type': 'NewsMediaOrganization', '@id': `${absolute(href(MAIN))}#publisher`, name: SITE.name,
+      url: absolute(href(MAIN)), logo: absolute(`${BASE}/favicon.svg`),
+      publishingPrinciples: absolute(href(lang, paths(lang).about)),
+      parentOrganization: SITE.publisher.name
+        ? { '@type': 'Organization', name: SITE.publisher.name, url: SITE.publisher.url || undefined } : undefined },
+    { '@type': 'CollectionPage', name: SITE.name, url: absolute(href(lang)), inLanguage: lang,
+      isPartOf: { '@id': `${absolute(href(lang))}#website` }, mainEntity: itemList(page.list) },
+  ] };
 }
 ---
 <Layout lang={lang} title={title} description={description} image={page.kind === 'article' ? page.article.data.image : undefined}
