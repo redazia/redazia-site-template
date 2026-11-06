@@ -68,6 +68,10 @@ export function sectionLabel(s: Section, lang: Lang): string {
   return s[lang]?.label || s.name;
 }
 
+export function sectionIntro(s: Section, lang: Lang): string {
+  return s[lang]?.intro || '';
+}
+
 export function sectionSlug(s: Section, lang: Lang): string {
   return s[lang]?.slug || slugify(s.name);
 }

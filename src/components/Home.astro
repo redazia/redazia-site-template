@@ -2,8 +2,8 @@
 import Card from './Card.astro';
 import { SITE, THEME, articleUrl, formatDate, sectionLabel, sectionOf, sectionUrl, t, type Article, type Lang } from '../lib/site';
 
-interface Props { list: Article[]; lang: Lang; title?: string; bySection?: boolean; emptyText?: string; demo?: boolean }
-const { list, lang, title, bySection = false, emptyText, demo = false } = Astro.props;
+interface Props { list: Article[]; lang: Lang; title?: string; intro?: string; bySection?: boolean; emptyText?: string; demo?: boolean }
+const { list, lang, title, intro, bySection = false, emptyText, demo = false } = Astro.props;
 const s = t(lang);
 const home = THEME.home;
 const [lead, ...rest] = list;
@@ -22,6 +22,7 @@ const groups = bySection && (home === 'front' || home === 'grid')
 const older = !bySection && title ? list.slice(shown) : [];
 ---
 {title && <h1 class="page-title">{title}</h1>}
+{intro && <p class="page-intro">{intro}</p>}
 {demo && <p class="demo-note">{s.demo}</p>}
 {!lead ? <p class="empty">{emptyText || s.empty}</p> : (
   <div class={`home home-${home}`}>
@@ -74,6 +75,7 @@ const older = !bySection && title ? list.slice(shown) : [];
   .hero.overlay :global(.title) { max-width: 820px; color: #fff; }
   .hero.overlay :global(.desc) { max-width: 720px; opacity: .92; }
   .column { max-width: 820px; margin: 0 auto; }
+  .page-intro { max-width: 760px; margin: -8px 0 28px; font-size: 18px; line-height: 1.55; color: var(--muted, inherit); }
   .home-list .column :global(.card:first-child) { padding-top: 0; }
   .group { border-top: 3px solid var(--ink); padding-top: 10px; margin-top: 12px; }
   .group-title { margin: 0; font-size: 24px; }

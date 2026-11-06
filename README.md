@@ -62,6 +62,12 @@ Publish one article by hand and check it on the site before turning on the autom
 { name: 'Tecnologia', it: { slug: 'tecnologia', label: 'Tecnologia' }, en: { slug: 'technology', label: 'Technology' } },
 ```
 
+An optional `intro` per language is shown under the section's title and used as its description for search engines:
+
+```js
+{ name: 'Analisi', it: { slug: 'analisi', label: 'Analisi', intro: 'Ogni sera alle 21 il caporedattore AI rilegge le notizie del giorno.' } },
+```
+
 An article whose section is not in the list still appears on the home page.
 
 ## Themes
