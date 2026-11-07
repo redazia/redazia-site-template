@@ -141,6 +141,14 @@ The text, in Markdown.
 
 `draft: true` keeps it off the site.
 
+### Recipes
+
+When an article is a recipe, Redazia also writes its card in the front matter, with the same ingredients and steps as the text; servings and times only when its sources give them (ISO 8601 durations). The article page turns it into schema.org `Recipe`, the card Google shows in its results, next to the `NewsArticle`. Google also wants the recipe's picture: keep `image`.
+
+```yaml
+recipe: {"yield": "4 servings", "prepTime": "PT15M", "cookTime": "PT10M", "totalTime": "PT25M", "ingredients": ["320 g spaghetti", "4 egg yolks"], "steps": ["Boil the spaghetti for 10 minutes.", "Off the heat, toss with the yolks."]}
+```
+
 ## License
 
 [MIT](LICENSE): use it, change it, sell sites made with it. Redazia itself is a separate service.

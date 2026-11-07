@@ -79,6 +79,10 @@ Se il tuo sito non può ricevere articoli (Squarespace, molti costruttori di sit
 - **Sottodominio** `news.il-tuo-sito.it`: un record CNAME verso Vercel o Netlify. È il più semplice.
 - **Cartella** `il-tuo-sito.it/news`: metti `base: '/news'` in `site.config.mjs` e fai girare dal sito principale le richieste di `/news/…` alla radice di questo sito (regola di rewrite su Cloudflare, Nginx, Apache, Vercel o Netlify; esempio per Nginx nel [README in inglese](README.md#next-to-an-existing-site)). Per Google gli articoli fanno parte del sito principale. L'indirizzo degli articoli in Redazia diventa `https://il-tuo-sito.it/news/articoli/{slug}`.
 
+## Ricette
+
+Quando un articolo è una ricetta, Redazia scrive anche la sua scheda nel front matter (`recipe`): gli stessi ingredienti e passaggi del testo, porzioni e tempi solo se le fonti li danno. La pagina dell'articolo la trasforma in `Recipe` di schema.org, la scheda che Google mostra nei risultati. Google vuole anche la foto della ricetta: tieni `image`.
+
 ## Licenza
 
 [MIT](LICENSE): usalo, modificalo, vendi siti fatti con questo modello. Redazia è un servizio a parte.

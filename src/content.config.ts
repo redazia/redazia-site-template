@@ -21,6 +21,18 @@ const article = z.object({
   // A translation names its original by the original's slug: the language
   // switch then leads from one to the other.
   translation_of: z.string().optional(),
+  // A recipe's card, written by Redazia when the article is a recipe: the
+  // same ingredients and steps as the text, servings and times only when
+  // its sources give them (ISO 8601 durations, e.g. PT1H30M). The page
+  // turns it into schema.org Recipe, the card search engines show.
+  recipe: z.object({
+    yield: z.string().optional(),
+    prepTime: z.string().optional(),
+    cookTime: z.string().optional(),
+    totalTime: z.string().optional(),
+    ingredients: z.array(z.string()).min(1),
+    steps: z.array(z.string()).min(1),
+  }).optional(),
 });
 
 // The id keeps the language folder ("it/my-article"), even when the article
