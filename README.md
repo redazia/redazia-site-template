@@ -54,6 +54,8 @@ Each article is one commit, so one deploy. Redazia opens a pull request and merg
 
 Publish one article by hand and check it on the site before turning on the automatic newsroom.
 
+**Feedback from readers** (in trial): set `feedback: 'https://app.redazia.com'` (your Redazia's address) in `site.config.mjs` and turn it on in Redazia › **Feedback**. A form under every article lets readers report a mistake or write to the newsroom; the message reaches you only after the reader confirms their email, and it is never published. The privacy line in the footer and on the About page then says so.
+
 ## Sections
 
 `name` is how Redazia files an article: write the same names in the automatic newsroom's sections (Sito e profilo › Redazione automatica). Each language has its own label and address:
@@ -140,6 +142,14 @@ The text, in Markdown.
 ```
 
 `draft: true` keeps it off the site.
+
+### Recipes
+
+When an article is a recipe, Redazia also writes its card in the front matter, with the same ingredients and steps as the text; servings and times only when its sources give them (ISO 8601 durations). The article page turns it into schema.org `Recipe`, the card Google shows in its results, next to the `NewsArticle`. Google also wants the recipe's picture: keep `image`.
+
+```yaml
+recipe: {"yield": "4 servings", "prepTime": "PT15M", "cookTime": "PT10M", "totalTime": "PT25M", "ingredients": ["320 g spaghetti", "4 egg yolks"], "steps": ["Boil the spaghetti for 10 minutes.", "Off the heat, toss with the yolks."]}
+```
 
 ## License
 

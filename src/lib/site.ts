@@ -23,7 +23,8 @@ export function t(lang: Lang) {
 /** What the site says about cookies and statistics, in the footer and "About". */
 export function privacyNote(lang: Lang): string {
   const s = t(lang);
-  return SITE.analytics?.matomo ? s.anonStats : s.noCookies;
+  const base = SITE.analytics?.matomo ? s.anonStats : s.noCookies;
+  return SITE.feedback ? `${base} ${s.feedbackNote}` : base;
 }
 
 export function tagline(lang: Lang): string {

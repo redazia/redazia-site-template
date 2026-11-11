@@ -45,6 +45,8 @@ Ogni articolo è un solo commit, quindi un solo deploy. Redazia apre una pull re
 
 Pubblica un articolo a mano e controllalo sul sito prima di accendere la redazione automatica.
 
+**Feedback dei lettori** (in prova): metti `feedback: 'https://app.redazia.com'` (l'indirizzo della tua Redazia) in `site.config.mjs` e accendilo in Redazia › **Feedback**. Sotto ogni articolo un modulo permette di segnalare un errore o scrivere alla redazione; il messaggio ti arriva solo dopo che il lettore ha confermato l'email e non viene mai pubblicato. La riga sulla privacy nel piè di pagina e in Chi siamo lo dice da sola.
+
 ## Rubriche
 
 `name` è il nome con cui Redazia archivia l'articolo: usa gli stessi nomi nelle rubriche della redazione automatica (Sito e profilo › Redazione automatica). Ogni lingua ha la sua etichetta e il suo indirizzo, e può avere `intro`: una frase o due sotto il titolo della rubrica, usata anche come descrizione per i motori di ricerca. Un articolo con una rubrica che non è nell'elenco compare comunque in home.
@@ -78,6 +80,10 @@ Se il tuo sito non può ricevere articoli (Squarespace, molti costruttori di sit
 
 - **Sottodominio** `news.il-tuo-sito.it`: un record CNAME verso Vercel o Netlify. È il più semplice.
 - **Cartella** `il-tuo-sito.it/news`: metti `base: '/news'` in `site.config.mjs` e fai girare dal sito principale le richieste di `/news/…` alla radice di questo sito (regola di rewrite su Cloudflare, Nginx, Apache, Vercel o Netlify; esempio per Nginx nel [README in inglese](README.md#next-to-an-existing-site)). Per Google gli articoli fanno parte del sito principale. L'indirizzo degli articoli in Redazia diventa `https://il-tuo-sito.it/news/articoli/{slug}`.
+
+## Ricette
+
+Quando un articolo è una ricetta, Redazia scrive anche la sua scheda nel front matter (`recipe`): gli stessi ingredienti e passaggi del testo, porzioni e tempi solo se le fonti li danno. La pagina dell'articolo la trasforma in `Recipe` di schema.org, la scheda che Google mostra nei risultati. Google vuole anche la foto della ricetta: tieni `image`.
 
 ## Licenza
 
