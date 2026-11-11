@@ -54,6 +54,8 @@ Each article is one commit, so one deploy. Redazia opens a pull request and merg
 
 Publish one article by hand and check it on the site before turning on the automatic newsroom.
 
+**Feedback from readers** (in trial): set `feedback: 'https://app.redazia.com'` (your Redazia's address) in `site.config.mjs` and turn it on in Redazia › **Feedback**. A form under every article lets readers report a mistake or write to the newsroom; the message reaches you only after the reader confirms their email, and it is never published. The privacy line in the footer and on the About page then says so.
+
 ## Sections
 
 `name` is how Redazia files an article: write the same names in the automatic newsroom's sections (Sito e profilo › Redazione automatica). Each language has its own label and address:

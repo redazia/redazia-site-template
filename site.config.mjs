@@ -67,6 +67,12 @@ export default {
 
   // Where readers report a mistake.
   contact: 'redazione@example.com',
+  // A form under every article to report a mistake or write to the
+  // newsroom, from Redazia (Feedback, in trial): the address of your
+  // Redazia, e.g. 'https://app.redazia.com'. The message reaches the
+  // newsroom only after the reader confirms their email; nothing is
+  // published. Turn it on in Redazia › Feedback too. '' for no form.
+  feedback: '',
 
   // Sample articles shown only while the site has none of its own, so the
   // design can be seen before the first publication. They disappear by

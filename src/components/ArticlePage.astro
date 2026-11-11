@@ -36,6 +36,7 @@ const about = href(lang, paths(lang).about);
       {' '}<a href={about}>{s.about}</a>{SITE.credit !== false && <> · <a href="https://redazia.com" rel="noopener">Redazia</a></>}</p>
   </aside>
 </article>
+{SITE.feedback && <script is:inline src={`${SITE.feedback.replace(/\/+$/, '')}/static/feedback.js`} data-lang={lang} defer></script>}
 {ArticleEnd && <ArticleEnd lang={lang} article={article} />}
 {related.length > 0 && (
   <section class="related">
